@@ -5,7 +5,6 @@ class CreateQuestionAnswers < ActiveRecord::Migration[5.2]
       t.string :value
       t.integer :score
       t.references :question, foreign_key: true
-      t.references :user, foreign_key: true
 
       t.timestamps
     end

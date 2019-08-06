@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @question_answer.name %>
+</p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @question_answer.value %>
+</p>
+
+<p>
+  <strong>Score:</strong>
+  <%= @question_answer.score %>
+</p>
+
+<p>
+  <strong>Question:</strong>
+  <%= @question_answer.question %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @question_answer.user %>
+</p>
+
+<%= link_to 'Edit', edit_question_answer_path(@question_answer) %> |
+<%= link_to 'Back', question_answers_path %>
