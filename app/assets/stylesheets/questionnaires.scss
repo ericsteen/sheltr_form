@@ -4,8 +4,8 @@
 
 /* PAGE & INPUT STYLING */
 body {
-  background: #000;
-  color: #FFF;
+  background: #000 !important;
+  color: #FFF !important;
 }
 
 .btn {
@@ -63,7 +63,7 @@ input[type="radio"].toggle.toggle-right + label:after {
   left: -100%;
 }
 input[type="radio"].toggle:checked + label {
-  background: #FFF;
+  background: #FFF !important;
   cursor: default;
   color: #000;
 }
@@ -80,7 +80,7 @@ input[type="radio"].toggle:checked + label:after {
 }
 .upform input, select, textarea {
   background-color: #000 !important;
-  color: #FFF;
+  color: #FFF !important;
 }
 .upform {
   font-family: 'Open Sans', sans-serif;
@@ -131,6 +131,7 @@ input[type="radio"].toggle:checked + label:after {
 .upform .upform-footer .btn {
   font-size: 24px;
   font-weight: bold;
-  padding: 5px 20px;
+  padding: 15px 20px;
+  background: royalblue;
 }
 /* UPFORM STYLE ENDS*/

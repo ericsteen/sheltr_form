@@ -1,5 +1,3 @@
-// app/javascript/questionnaires/components/QuestionnairesDisplay.jsx
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
@@ -38,17 +36,18 @@ class QuestionnairesDisplay extends React.Component {
     }
   }
 
-  componentDidMount () {
+  componentWillReceiveProps (nextProps) {
+    this.setQuoteIdFromQueryString(nextProps.location.search);
+    this.fetchQuote(this.questionnaireId);
+  }
+
+  componentDidMount = () => {
     this.setQuoteIdFromQueryString(this.props.location.search);
     this.fetchQuote(this.questionnaireId);
-    console.log(this.el)
-
-    this.$el = $(this.el)
-    console.log(this.$el)
-    this.$el.upform(this.el)
-    // this.$el.find('.input-block').first().click()
-    window.addEventListener('scroll', this.handleScroll);
     this.setState({ ready: true });
+    var that = this
+
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   handleScroll = () => {
@@ -62,10 +61,6 @@ class QuestionnairesDisplay extends React.Component {
       }
     });
   }
-  componentWillReceiveProps (nextProps) {
-    this.setQuoteIdFromQueryString(nextProps.location.search);
-    this.fetchQuote(this.questionnaireId);
-  }
 
   reinitState = (e) => {
     $('.upform').find('.input-block').removeClass('active')
@@ -76,21 +71,28 @@ class QuestionnairesDisplay extends React.Component {
     $(e).find('input').focus();
   }
 
-  rescroll = (e) => {
-    window.scrollTo($(e.target), 200, { offset: {left: 100, top: -200}, queue: false })
-  }
-
   reinit = (e) => {
     this.reinitState(e)
     this.rescroll(e)
   }
 
   moveNext = (e) => {
-    $(e).parent().parent().next().click()
+    $(e.currentTarget).parent().parent().next().click()
   }
 
   movePrev = (e) => {
     $(e).parent().parent().prev().click()
+  }
+
+  handleChange = (e) => {
+    this.moveNext(e)
+  }
+
+  rescroll = (e) => {
+    e.preventDefault()
+    $([document.documentElement, document.body]).stop().animate({
+          scrollTop: $(e.target).offset().top - 200
+      }, 300);
   }
 
 
@@ -106,21 +108,18 @@ class QuestionnairesDisplay extends React.Component {
       const { questions } = section
       for (const question of questions) {
         qRows.push(
-          <div onClick={this.rescroll} key={question.name} className="input-block">
+          <div onClick={(e) => this.rescroll(e)} key={question.name} className="input-block">
             <div className="label">{question.name}</div>
             <div className="input-control">
-              <input id="toggle-on-q1" className="toggle toggle-left" name="q1" value="yes" type={question.input_type}></input>
+              <input onChange={(e) => this.moveNext(e)} id="toggle-on-q1" className="toggle toggle-left" name="q1" value="yes" type={question.input_type}></input>
               <label htmlFor="toggle-on-q1" className="btn"><span>A</span> Yes</label>
-              <input id="toggle-off-q1" className="toggle toggle-right" name="q1" value="no" type={question.input_type}></input>
+              <input onChange={(e) => this.moveNext(e)} id="toggle-off-q1" className="toggle toggle-right" name="q1" value="no" type={question.input_type}></input>
               <label htmlFor="toggle-off-q1" className="btn"><span>B</span> No</label>
             </div>
           </div>
         )
       }
     }
-
-    console.log(qRows)
-
     return qRows
   }
 
@@ -129,9 +128,6 @@ class QuestionnairesDisplay extends React.Component {
     const nextQuoteId = Number(this.state.questionnaire.id) + 1;
 
     return (
-        // {/* <Link to={`/?questionnaire=${nextQuoteId}`}>Next</Link> */}
-
-
       <div ref={el => this.el = el} className="upform">
         <form>
 
@@ -139,14 +135,6 @@ class QuestionnairesDisplay extends React.Component {
 
           <div className="upform-main">
             { ready ? questionnaire.sections && this.renderQuestionnaire(questionnaire) : <div>Loading...</div>}
-
-
-            <div className="input-block">
-              <div className="label">What is your name?</div>
-              <div className="input-control">
-                <input type="text" className="required" autoComplete="off"></input>
-              </div>
-            </div>
 
           </div>
 
